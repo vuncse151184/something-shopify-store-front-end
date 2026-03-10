@@ -1,8 +1,10 @@
-import { shopifyClient } from "@/packages/shopify/client"
+import "server-only"
+import { getShopifyClient } from "@/packages/shopify/client"
 import { PRODUCTS_QUERY } from "@/packages/shopify/queries"
 import type { ShopifyProduct, ShopifyProductEdge } from "@/types/product"
 
 export async function getProducts(): Promise<ShopifyProduct[]> {
+  const shopifyClient = getShopifyClient()
   const { data } = await shopifyClient.request(PRODUCTS_QUERY)
 
   return data.products.edges.map((edge: ShopifyProductEdge) => ({
