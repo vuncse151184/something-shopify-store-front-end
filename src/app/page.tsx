@@ -1,23 +1,13 @@
-import { getProducts } from "@/services/product.service"
+import SneakerHero from "@/components/sections/SneakerHero"
+import HeroNavbar from "@/components/layout/HeroNavbar"
+import FeaturedProducts from "@/components/sections/FeaturedProducts"
 
-export default async function Home() {
-  const products = await getProducts()
-
+export default function Home() {
   return (
-    <div className="grid grid-cols-4 gap-6 p-10">
-      {products.map((p: any) => {
-        const product = p.node
-        const image = product.images.edges[0]?.node.url
-
-        return (
-          <div key={product.id} className="border p-4 rounded">
-            <img src={image} className="w-full h-64 object-cover"/>
-            <h2 className="text-lg font-bold mt-2">
-              {product.title}
-            </h2>
-          </div>
-        )
-      })}
-    </div>
+    <>
+      <HeroNavbar />
+      <SneakerHero />
+      <FeaturedProducts />
+    </>
   )
 }

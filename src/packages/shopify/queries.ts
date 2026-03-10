@@ -25,6 +25,10 @@ query Products {
                 amount
                 currencyCode
               }
+              compareAtPrice{
+                amount
+                currencyCode
+              }
             }
           }
         }
