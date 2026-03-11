@@ -9,6 +9,10 @@ type Props = {
   product: ShopifyProduct
 }
 
+function formatVND(amount: number) {
+  return new Intl.NumberFormat('vi-VN').format(amount) + '₫'
+}
+
 export default function ProductCard({ product }: Props) {
   const firstImage = product.images[0]?.url
   const firstVariant = product.variants[0]
@@ -32,7 +36,7 @@ export default function ProductCard({ product }: Props) {
           {isOnSale && (
             <div className="absolute top-3 left-3 z-20">
               <span className="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase shadow-lg shadow-red-600/30">
-                Sale
+                Giảm giá
               </span>
             </div>
           )}
@@ -61,7 +65,7 @@ export default function ProductCard({ product }: Props) {
             {/* Quick view hint */}
             <div className="absolute bottom-0 inset-x-0 flex justify-center pb-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
               <span className="bg-white/90 backdrop-blur-md text-black text-xs font-bold px-4 py-2 rounded-full tracking-wider uppercase">
-                View Details
+                Xem chi tiết
               </span>
             </div>
           </div>
@@ -72,12 +76,12 @@ export default function ProductCard({ product }: Props) {
               {product.title}
             </h3>
             <div className="mt-1.5 flex items-center gap-2">
-              <span className="text-base font-bold text-red-500 font-[var(--font-display)]">
-                ${price.toFixed(2)}
+              <span className="text-base font-bold tracking-widest text-red-500 font-[var(--font-display)]">
+                {formatVND(price)}
               </span>
               {isOnSale && compareAtPrice && (
                 <span className="text-xs text-white/30 line-through">
-                  ${compareAtPrice.toFixed(2)}
+                  {formatVND(compareAtPrice)}
                 </span>
               )}
             </div>

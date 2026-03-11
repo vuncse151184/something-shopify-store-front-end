@@ -22,14 +22,14 @@ export default function FeaturedProducts() {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-[2px] bg-red-500" />
             <span className="text-red-500 text-xs font-bold tracking-[0.3em] uppercase">
-              Our Collection
+              Bộ Sưu Tập
             </span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold font-[var(--font-display)] tracking-tight text-white">
-            Featured Products
+            Sản Phẩm Nổi Bật
           </h2>
           <p className="mt-3 text-sm md:text-base text-white/40 max-w-lg">
-            Explore our curated selection of exclusive sneakers and gear.
+            Khám phá bộ sưu tập giày sneaker và phụ kiện độc quyền của chúng tôi.
           </p>
         </motion.div>
 

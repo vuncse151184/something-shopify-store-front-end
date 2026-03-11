@@ -36,8 +36,8 @@ export default function ProductGrid() {
   if (error) {
     return (
       <div className="text-center py-20">
-        <p className="text-red-400 text-sm">Failed to load products</p>
-        <p className="text-white/30 text-xs mt-1">Please try again later</p>
+        <p className="text-red-400 text-sm">Không thể tải sản phẩm</p>
+        <p className="text-white/30 text-xs mt-1">Vui lòng thử lại sau</p>
       </div>
     )
   }

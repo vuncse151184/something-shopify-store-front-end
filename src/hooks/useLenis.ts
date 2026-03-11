@@ -1,10 +1,14 @@
 "use client"
 
 import { useEffect } from "react"
-import { initLenis } from "@/lib/lenis"
+import { initLenis, destroyLenis } from "@/lib/lenis"
 
 export function useLenis() {
   useEffect(() => {
     initLenis()
+
+    return () => {
+      destroyLenis()
+    }
   }, [])
 }
