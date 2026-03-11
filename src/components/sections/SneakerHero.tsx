@@ -1,15 +1,15 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 
 const colorVariants = [
-  { id: "white-red", src: "/images/hero-shoe (1).png", label: "Trắng / Đỏ", accent: "#dc2626", tw: "text-red-600" },
-  { id: "purple", src: "/images/shoe-purple (1).png", label: "Tím", accent: "#a855f7", tw: "text-purple-500" },
-  { id: "green", src: "/images/shoe-green (1).png", label: "Xanh lá", accent: "#22c55e", tw: "text-green-500" },
-  { id: "red", src: "/images/shoe-red (1).png", label: "Đỏ", accent: "#ef4444", tw: "text-red-500" },
-  { id: "pink", src: "/images/shoe-pink (1).png", label: "Hồng", accent: "#ec4899", tw: "text-pink-500" },
+  { id: "white-red", src: "/images/hero-shoe (1).png", label: "Trắng / Đỏ", accent: "#dc2626" },
+  { id: "purple", src: "/images/shoe-purple (1).png", label: "Tím", accent: "#a855f7" },
+  { id: "green", src: "/images/shoe-green (1).png", label: "Xanh lá", accent: "#22c55e" },
+  { id: "red", src: "/images/shoe-red (1).png", label: "Đỏ", accent: "#ef4444" },
+  { id: "pink", src: "/images/shoe-pink (1).png", label: "Hồng", accent: "#ec4899" },
 ]
 
 export default function SneakerHero() {
@@ -23,9 +23,23 @@ export default function SneakerHero() {
 
       {/* ——— BACKGROUND LAYERS ——— */}
 
-      {/* Subtle red radial gradients */}
-      <div className="absolute inset-0 opacity-25 transition-all duration-700" style={{ background: `radial-gradient(ellipse at 30% 50%, ${accent}4D, transparent 60%)` }} />
-      <div className="absolute inset-0 opacity-20 transition-all duration-700" style={{ background: `radial-gradient(ellipse at 80% 30%, ${accent}33, transparent 50%)` }} />
+      {/* Crossfade color layers — each is always mounted, only opacity changes */}
+      {colorVariants.map((v) => (
+        <div
+          key={v.id}
+          className="absolute inset-0 transition-opacity duration-700 ease-out will-change-[opacity]"
+          style={{ opacity: activeColor === v.id ? 1 : 0 }}
+        >
+          <div
+            className="absolute inset-0 opacity-25"
+            style={{ background: `radial-gradient(ellipse at 30% 50%, ${v.accent}4D, transparent 60%)` }}
+          />
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{ background: `radial-gradient(ellipse at 80% 30%, ${v.accent}33, transparent 50%)` }}
+          />
+        </div>
+      ))}
 
       {/* Ghost watermark "JORDAN" */}
       <div
@@ -41,14 +55,14 @@ export default function SneakerHero() {
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1400 900" fill="none" preserveAspectRatio="none">
         <motion.ellipse
           cx="700" cy="450" rx="500" ry="350"
-          stroke={`${accent}26`} strokeWidth="1.5"
+          stroke="rgba(255,255,255,0.06)" strokeWidth="1.5"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
           transition={{ duration: 2, delay: 0.5 }}
         />
         <motion.ellipse
           cx="700" cy="450" rx="600" ry="400"
-          stroke={`${accent}14`} strokeWidth="1"
+          stroke="rgba(255,255,255,0.04)" strokeWidth="1"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
           transition={{ duration: 2.5, delay: 0.8 }}
@@ -69,7 +83,10 @@ export default function SneakerHero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="absolute left-0 md:left-[5%] z-[5] pointer-events-none"
           >
-            <span className="font-[var(--font-display)] text-[clamp(60px,10vw,140px)] font-bold italic leading-none tracking-tight transition-colors duration-500" style={{ color: accent, filter: `drop-shadow(0 0 40px ${accent}66)` }}>
+            <span
+              className="font-[var(--font-display)] text-[clamp(60px,10vw,140px)] font-bold italic leading-none tracking-tight"
+              style={{ color: accent, transition: "color 0.5s ease" }}
+            >
               Jump
             </span>
           </motion.div>
@@ -93,7 +110,10 @@ export default function SneakerHero() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="absolute top-1/3 right-[10%] md:right-[15%] z-5 pointer-events-none"
           >
-            <span className="font-[var(--font-display)] italic text-[clamp(24px,2vw,48px)] font-bold tracking-widest transition-colors duration-500" style={{ color: accent }}>
+            <span
+              className="font-[var(--font-display)] italic text-[clamp(24px,2vw,48px)] font-bold tracking-widest"
+              style={{ color: accent, transition: "color 0.5s ease" }}
+            >
               2021 PF
             </span>
           </motion.div>
@@ -108,21 +128,46 @@ export default function SneakerHero() {
             Giày Bóng Rổ
           </motion.p>
 
-          {/* HERO SHOE IMAGE */}
+          {/* HERO SHOE IMAGE — with separate glow div */}
           <motion.div
             initial={{ opacity: 0, scale: 0.7, rotate: -15 }}
             animate={{ opacity: 1, scale: 1, rotate: -5 }}
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
             className="relative z-10 w-[clamp(300px,50vw,650px)] h-[clamp(250px,40vw,500px)]"
           >
-            <Image
-              src={activeShoe.src}
-              alt="Jordan Jumpman 2021 PF"
-              fill
-              priority
-              className="object-contain transition-all duration-500"
-              style={{ filter: `drop-shadow(0 20px 60px ${accent}80)` }}
-            />
+            {/* Glow behind shoe — GPU composited blur, only color crossfades */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {colorVariants.map((v) => (
+                <div
+                  key={v.id}
+                  className="absolute w-[70%] h-[50%] rounded-full blur-[80px] transition-opacity duration-500 ease-out will-change-[opacity]"
+                  style={{
+                    backgroundColor: v.accent,
+                    opacity: activeColor === v.id ? 0.5 : 0,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Shoe images with crossfade */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeShoe.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={activeShoe.src}
+                  alt="Jordan Jumpman 2021 PF"
+                  fill
+                  priority
+                  className="object-contain"
+                />
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
 
         </div>
@@ -148,12 +193,16 @@ export default function SneakerHero() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: 1 + i * 0.08 }}
                     onClick={() => setActiveColor(variant.id)}
-                    className={`relative w-14 h-14 rounded-md overflow-hidden border-2 transition-all duration-300 hover:scale-110 ${activeColor === variant.id
+                    className={`relative w-14 h-14 rounded-md overflow-hidden border-2 hover:scale-110 ${activeColor === variant.id
                       ? "border-current"
                       : "border-white/20 hover:border-white/50"
                       }`}
+                    style={{
+                      borderColor: activeColor === variant.id ? variant.accent : undefined,
+                      boxShadow: activeColor === variant.id ? `0 0 12px ${variant.accent}80` : "none",
+                      transition: "border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease",
+                    }}
                     aria-label={`Chọn màu ${variant.label}`}
-                    style={activeColor === variant.id ? { borderColor: variant.accent, boxShadow: `0 0 12px ${variant.accent}80` } : {}}
                   >
                     <Image
                       src={variant.src}
@@ -172,7 +221,7 @@ export default function SneakerHero() {
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.3 }}
-                className="px-6 py-3 border-2 border-white text-white text-xs font-bold tracking-[0.15em] rounded-sm hover:bg-white hover:text-black transition-all duration-300 uppercase"
+                className="px-6 py-3 border-2 border-white text-white text-xs font-bold tracking-[0.15em] rounded-sm hover:bg-white hover:text-black transition-colors duration-300 uppercase"
               >
                 Thêm vào giỏ
               </motion.button>
@@ -180,7 +229,7 @@ export default function SneakerHero() {
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.4 }}
-                className="px-6 py-3 border-2 border-white bg-white text-black text-xs font-bold tracking-[0.15em] rounded-sm hover:bg-transparent hover:text-white transition-all duration-300 uppercase"
+                className="px-6 py-3 border-2 border-white bg-white text-black text-xs font-bold tracking-[0.15em] rounded-sm hover:bg-transparent hover:text-white transition-colors duration-300 uppercase"
               >
                 Mua ngay
               </motion.button>
@@ -195,8 +244,18 @@ export default function SneakerHero() {
             className="text-center md:text-left"
           >
             <div className="flex items-baseline gap-3 justify-center md:justify-start">
-              <span className="text-4xl font-bold font-[var(--font-display)] transition-colors duration-500" style={{ color: accent }}>3.200.000₫</span>
-              <span className="text-white text-[10px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase transition-colors duration-500" style={{ backgroundColor: accent }}>độc quyền</span>
+              <span
+                className="text-4xl font-bold font-[var(--font-display)]"
+                style={{ color: accent, transition: "color 0.5s ease" }}
+              >
+                3.200.000₫
+              </span>
+              <span
+                className="text-white text-[10px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase"
+                style={{ backgroundColor: accent, transition: "background-color 0.5s ease" }}
+              >
+                độc quyền
+              </span>
             </div>
             <p className="mt-1 text-sm font-bold tracking-[0.1em] text-white/90">
               JORDAN JUMPMAN 2021 PF

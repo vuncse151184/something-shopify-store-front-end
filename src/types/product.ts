@@ -20,6 +20,7 @@ export interface ShopifyProduct {
   id: string
   title: string
   handle: string
+  tags?: string[]
   description: string
   images: ShopifyImage[]
   variants: ShopifyVariant[]
@@ -32,6 +33,7 @@ export interface ShopifyProductEdge {
   node: {
     id: string
     title: string
+    tags?: string[]
     handle: string
     description: string
     images: {

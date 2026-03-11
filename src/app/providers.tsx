@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactNode, useState } from "react"
+import { SmoothScroll } from "@/lib/lenis"
 
 function makeQueryClient() {
   return new QueryClient({
@@ -25,7 +26,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={client}>
-      {children}
+      <SmoothScroll>{children}</SmoothScroll>
     </QueryClientProvider>
   )
 }

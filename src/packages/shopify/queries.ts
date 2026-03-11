@@ -5,6 +5,7 @@ query Products {
       node {
         id
         title
+        tags
         handle
         description
         images(first:5){
