@@ -3,6 +3,7 @@ import SneakerHero from "@/components/sections/SneakerHero"
 import HeroNavbar from "@/components/layout/HeroNavbar"
 import FeaturedProducts from "@/components/sections/FeaturedProducts"
 import Navbar from "@/components/layout/Navbar"
+import Footer from "@/components/layout/Footer"
 
 export const metadata: Metadata = {
   title: "Something Store — Exclusive Sneakers & Streetwear",
@@ -17,6 +18,7 @@ export default function Home() {
       <Navbar />
       <SneakerHero />
       <FeaturedProducts />
+      <Footer />
     </>
   )
 }

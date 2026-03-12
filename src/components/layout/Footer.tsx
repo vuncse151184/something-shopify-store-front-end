@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Mail, MapPin, Phone, Instagram, Facebook, Twitter, Youtube } from "lucide-react"
+import Image from "next/image"
 
 const footerLinks = {
   shop: [
@@ -42,12 +43,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-4">
             <Link href="/" className="inline-flex items-center gap-3 group">
-              <svg className="w-8 h-8 fill-white transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
-                <path d="M15.9 2.3c-.1-.1-.3-.2-.5-.1-.2 0-.3.2-.3.4l.4 2.6c0 .2-.1.3-.2.4l-3.2 1.7c-.1.1-.2.1-.3.1L8.5 6.8c-.2-.1-.4 0-.4.2l-.3 2.7c0 .2-.2.3-.3.3L4.8 11c-.2.1-.3.3-.2.5l1 2.5c.1.2 0 .3-.1.4l-2.2 1.7c-.2.1-.2.3-.1.5l1.5 2.3c.1.2.1.3 0 .4L3 21.6c-.1.2 0 .4.2.5l2.6.6c.2 0 .3.2.3.3l.2 2.7c0 .2.2.4.4.3l2.6-.8c.2-.1.3 0 .4.1l1.6 2.2c.1.2.3.2.5.1l2.3-1.5c.2-.1.3-.1.4 0l2.3 1.5c.2.1.4.1.5-.1l1.6-2.2c.1-.2.3-.2.4-.1l2.6.8c.2.1.4-.1.4-.3l.2-2.7c0-.2.2-.3.3-.3l2.6-.6c.2 0 .3-.3.2-.5l-1.5-2.3c-.1-.2-.1-.3 0-.4l1.5-2.3c.1-.2.1-.4-.2-.5l-2.7-.9c-.2-.1-.3-.2-.3-.3l-.3-2.7c0-.2-.2-.3-.4-.2l-3.3.6c-.1 0-.2 0-.3-.1L17 5.3c-.1-.1-.2-.3-.2-.4l.4-2.6z" transform="scale(0.75) translate(4, 0)" />
-              </svg>
-              <span className="font-[var(--font-display)] text-xl font-bold tracking-[0.15em] uppercase text-white">
-                Something
-              </span>
+              <Image src="https://res.cloudinary.com/dtov4zdy4/image/upload/v1773218437/ChatGPT_Image_Mar_11_2026_03_37_06_PM_1_iolztk.png" alt="Jumpman" width={120} height={120} />
             </Link>
 
             <p className="mt-5 text-sm text-white/35 leading-relaxed max-w-xs">
@@ -58,15 +54,15 @@ export default function Footer() {
             <div className="mt-6 space-y-3">
               <a href="mailto:support@something.store" className="flex items-center gap-3 text-xs text-white/30 hover:text-red-400 transition-colors">
                 <Mail size={14} className="text-red-500/50" />
-                support@something.store
+                contactme.nguyenvudev@gmail.com
               </a>
-              <a href="tel:+15551234567" className="flex items-center gap-3 text-xs text-white/30 hover:text-red-400 transition-colors">
+              <a href="tel:+84338010426" className="flex items-center gap-3 text-xs text-white/30 hover:text-red-400 transition-colors">
                 <Phone size={14} className="text-red-500/50" />
-                +1 (555) 123-4567
+                +84 338 0104 26
               </a>
               <span className="flex items-center gap-3 text-xs text-white/30">
                 <MapPin size={14} className="text-red-500/50" />
-                New York, NY 10001
+                Bà Rịa - Vũng Tàu
               </span>
             </div>
 

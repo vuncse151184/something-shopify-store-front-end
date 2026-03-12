@@ -95,7 +95,7 @@ export default function SneakerHero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="absolute bottom-4 sm:bottom-8 md:bottom-20 lg:bottom-40 left-0 md:left-[5%] z-5 italic text-gray-400 text-xs sm:text-sm md:text-lg tracking-[0.3em] sm:tracking-[0.5em] font-light pointer-events-none"
+              className="absolute bottom-10 sm:bottom-8 md:bottom-20 lg:bottom-40 left-0 md:left-[5%] z-5 italic text-gray-400 text-xs sm:text-sm md:text-lg tracking-[0.3em] sm:tracking-[0.5em] font-light pointer-events-none"
             >
               Giày Bóng Rổ
             </motion.p>
@@ -118,7 +118,7 @@ export default function SneakerHero() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="absolute top-[15%] sm:top-[20%] md:top-1/4 right-[5%] sm:right-[8%] md:right-[15%] z-5 pointer-events-none"
+            className="absolute top-[40%] sm:top-[20%] md:top-1/4 right-[5%] sm:right-[8%] md:right-[15%] z-5 pointer-events-none"
           >
             <span
               className="font-[var(--font-display)] italic text-[clamp(16px,3vw,48px)] font-bold tracking-widest"
