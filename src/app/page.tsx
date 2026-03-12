@@ -1,20 +1,50 @@
 import type { Metadata } from "next"
-import SneakerHero from "@/components/sections/SneakerHero"
-import HeroNavbar from "@/components/layout/HeroNavbar"
-import FeaturedProducts from "@/components/sections/FeaturedProducts"
-import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
+import Navbar from "@/components/layout/Navbar"
+import JsonLd from "@/components/seo/JsonLd"
+import FeaturedProducts from "@/components/sections/FeaturedProducts"
+import SneakerHero from "@/components/sections/SneakerHero"
+import {
+  buildHomePageSchema,
+  buildLocaleAlternates,
+  getMetadataImages,
+  siteConfig,
+} from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Something Store — Exclusive Sneakers & Streetwear",
+  title: "Sneaker chính hãng và streetwear cho khách hàng Việt Nam",
   description:
-    "Discover exclusive sneakers, limited-edition drops, and curated streetwear collections. Authentic products and fast shipping.",
-  alternates: { canonical: "/" },
+    "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Something Store với giao hàng toàn quốc.",
+  keywords: [
+    "sneaker chính hãng",
+    "streetwear Việt Nam",
+    "mua giày online",
+    "Something Store",
+  ],
+  alternates: buildLocaleAlternates("/"),
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: "Something Store | Sneaker chính hãng tại Việt Nam",
+    description:
+      "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Something Store với giao hàng toàn quốc.",
+    images: getMetadataImages(undefined, "Something Store | Sneaker chính hãng tại Việt Nam"),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Something Store | Sneaker chính hãng tại Việt Nam",
+    description:
+      "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Something Store với giao hàng toàn quốc.",
+    images: getMetadataImages().map((image) => image.url),
+  },
 }
 
 export default function Home() {
   return (
     <>
+      <JsonLd data={buildHomePageSchema()} />
       <Navbar />
       <SneakerHero />
       <FeaturedProducts />

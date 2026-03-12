@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Checkout",
-  description: "Complete your order. Secure checkout with fast shipping.",
+  title: "Thanh toán",
+  description: "Hoàn tất đơn hàng với quy trình thanh toán an toàn tại Something Store.",
   robots: { index: false, follow: false },
 }
 

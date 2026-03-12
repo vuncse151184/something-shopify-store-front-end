@@ -1,10 +1,29 @@
 import type { Metadata } from "next"
 import { Store, Truck, ShieldCheck, RefreshCw, Clock, PackageCheck, AlertCircle, Phone } from "lucide-react"
+import JsonLd from "@/components/seo/JsonLd"
+import { buildAboutPageSchema, buildLocaleAlternates, getMetadataImages, siteConfig } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Giới Thiệu",
+  title: "Gi\u1edbi thi\u1ec7u",
   description:
-    "Tìm hiểu về Something Store — cửa hàng giày sneaker và streetwear chính hãng. Chính sách đổi trả minh bạch, giao hàng toàn quốc.",
+    "T\u00ecm hi\u1ec3u v\u1ec1 Something Store, c\u1eeda h\u00e0ng gi\u00e0y sneaker v\u00e0 streetwear ch\u00ednh h\u00e3ng v\u1edbi giao h\u00e0ng to\u00e0n qu\u1ed1c v\u00e0 ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 minh b\u1ea1ch.",
+  keywords: [
+    "gi\u1edbi thi\u1ec7u Something Store",
+    "sneaker ch\u00ednh h\u00e3ng Vi\u1ec7t Nam",
+    "ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 sneaker",
+    "c\u1eeda h\u00e0ng gi\u00e0y B\u00e0 R\u1ecba V\u0169ng T\u00e0u",
+  ],
+  alternates: buildLocaleAlternates("/about"),
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: `${siteConfig.url}/about`,
+    siteName: siteConfig.name,
+    title: "Gi\u1edbi thi\u1ec7u | Something Store",
+    description:
+      "T\u00ecm hi\u1ec3u v\u1ec1 Something Store, c\u1eeda h\u00e0ng gi\u00e0y sneaker v\u00e0 streetwear ch\u00ednh h\u00e3ng v\u1edbi giao h\u00e0ng to\u00e0n qu\u1ed1c v\u00e0 ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 minh b\u1ea1ch.",
+    images: getMetadataImages(undefined, "Gi\u1edbi thi\u1ec7u | Something Store"),
+  },
 }
 
 const values = [
@@ -67,7 +86,9 @@ const returnNotes = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <>
+      <JsonLd data={buildAboutPageSchema()} />
+      <div className="min-h-screen bg-black text-white">
 
       {/* Hero section */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
@@ -242,6 +263,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-    </div>
+      </div>
+    </>
   )
 }

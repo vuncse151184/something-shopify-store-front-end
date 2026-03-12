@@ -247,7 +247,7 @@ export default function SneakerHero() {
           >
             <div className="flex items-baseline gap-2 justify-center">
               <span
-                className="text-2xl sm:text-3xl md:text-4xl font-bold font-[var(--font-display)]"
+                className="text-2xl sm:text-3xl md:text-4xl tracking-widest font-bold font-[var(--font-display)]"
                 style={{ color: accent, transition: "color 0.5s ease" }}
               >
                 3.200.000₫

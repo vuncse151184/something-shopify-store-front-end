@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next"
-import { getProducts } from "@/services/product.service"
+import { siteConfig } from "@/lib/seo"
 import { getCollections } from "@/services/collection.service"
+import { getProducts } from "@/services/product.service"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://something.store"
+  const siteUrl = siteConfig.url
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -11,6 +12,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
+    },
+    {
+      url: `${siteUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
       url: `${siteUrl}/collections`,
@@ -26,8 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Dynamic product pages
   let productPages: MetadataRoute.Sitemap = []
+
   try {
     const products = await getProducts()
     productPages = products.map((product) => ({
@@ -37,11 +44,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }))
   } catch {
-    // Graceful fallback
+    productPages = []
   }
 
-  // Dynamic collection pages
   let collectionPages: MetadataRoute.Sitemap = []
+
   try {
     const collections = await getCollections()
     collectionPages = collections.map((collection) => ({
@@ -51,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
   } catch {
-    // Graceful fallback
+    collectionPages = []
   }
 
   return [...staticPages, ...productPages, ...collectionPages]

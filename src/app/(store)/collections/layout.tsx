@@ -1,10 +1,21 @@
 import type { Metadata } from "next"
+import { buildLocaleAlternates, getMetadataImages, siteConfig } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Collections",
+  title: "Bộ sưu tập sneaker chính hãng",
   description:
-    "Browse our curated sneaker collections. From limited drops to everyday essentials, find the perfect pair.",
-  alternates: { canonical: "/collections" },
+    "Khám phá các bộ sưu tập sneaker và streetwear được tuyển chọn cho khách hàng tại Việt Nam.",
+  alternates: buildLocaleAlternates("/collections"),
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: `${siteConfig.url}/collections`,
+    siteName: siteConfig.name,
+    title: "Bộ sưu tập | Something Store",
+    description:
+      "Khám phá các bộ sưu tập sneaker và streetwear được tuyển chọn cho khách hàng tại Việt Nam.",
+    images: getMetadataImages(undefined, "Bộ sưu tập | Something Store"),
+  },
 }
 
 export default function CollectionsLayout({
