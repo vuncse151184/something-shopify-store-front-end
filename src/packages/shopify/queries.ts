@@ -4,7 +4,7 @@ query Products {
     edges {
       node {
         id
-        title
+        title 
         tags
         handle
         description

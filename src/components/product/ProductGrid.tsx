@@ -1,6 +1,5 @@
 "use client"
 
-import { motion, type Variants } from "framer-motion"
 import { useProducts } from "@/hooks/useProducts"
 import ProductCard from "./ProductCard"
 
@@ -14,20 +13,6 @@ function ProductSkeleton() {
       </div>
     </div>
   )
-}
-
-const containerVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-}
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0 },
 }
 
 export default function ProductGrid() {
@@ -53,18 +38,16 @@ export default function ProductGrid() {
   }
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
-      variants={containerVariants}
-      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6"
-    >
-      {products.map((product) => (
-        <motion.div key={product.id} variants={itemVariants}>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+      {products.map((product, index) => (
+        <div
+          key={product.id}
+          className="animate-fade-in-up"
+          style={{ animationDelay: `${index * 60}ms` }}
+        >
           <ProductCard product={product} />
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </div>
   )
 }

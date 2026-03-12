@@ -30,6 +30,7 @@ export async function getProducts(): Promise<ShopifyProduct[]> {
     id: edge.node.id,
     title: edge.node.title,
     handle: edge.node.handle,
+    tags: edge.node.tags,
     description: edge.node.description,
     images: edge.node.images.edges.map((img: { node: { url: string } }) => img.node),
     variants: edge.node.variants.edges.map((v: { node: ShopifyProduct["variants"][number] }) => v.node),

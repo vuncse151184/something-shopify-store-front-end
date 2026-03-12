@@ -32,12 +32,12 @@ export default function Navbar() {
   return (
     <>
       <motion.nav
-        initial={{ y: -60, opacity: 0 }}
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled
-            ? "bg-black/80 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-            : "bg-transparent"
+          ? "bg-black/80 backdrop-blur-xl  shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+          : "bg-transparent"
           }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 h-20 flex items-center justify-between text-white">
@@ -129,8 +129,8 @@ export default function Navbar() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={`block py-3 text-sm font-semibold tracking-[0.2em] uppercase transition-colors ${isActive
-                          ? "text-red-500 border-l-2 border-red-500 pl-4"
-                          : "text-white/60 hover:text-white pl-4"
+                        ? "text-red-500 border-l-2 border-red-500 pl-4"
+                        : "text-white/60 hover:text-white pl-4"
                         }`}
                     >
                       {link.label}

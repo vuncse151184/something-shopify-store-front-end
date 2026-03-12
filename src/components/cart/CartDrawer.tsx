@@ -7,6 +7,10 @@ import { X, Minus, Plus, ShoppingBag, Loader2 } from "lucide-react"
 import { useCartStore, selectTotalItems, selectSubtotal } from "@/store/cart.store"
 import { useCheckout } from "@/hooks/useCheckout"
 
+function formatVND(amount: number) {
+  return new Intl.NumberFormat('vi-VN').format(amount) + '₫'
+}
+
 export default function CartDrawer({
   open,
   onClose
@@ -31,7 +35,7 @@ export default function CartDrawer({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+            className="fixed inset-0 bg-black/60 z-[60]"
           />
 
           {/* Drawer */}
@@ -39,7 +43,7 @@ export default function CartDrawer({
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            transition={{ type: "tween", duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
             className="fixed right-0 top-0 h-full w-full max-w-[420px] bg-neutral-950 border-l border-white/[0.08] shadow-2xl z-[61] flex flex-col"
           >
             {/* Header */}
@@ -47,7 +51,7 @@ export default function CartDrawer({
               <div className="flex items-center gap-3">
                 <ShoppingBag size={20} className="text-red-500" />
                 <h2 className="text-lg font-bold font-[var(--font-display)] tracking-wider uppercase text-white">
-                  Your Cart
+                  Giỏ Hàng
                 </h2>
                 {totalItems > 0 && (
                   <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -69,24 +73,20 @@ export default function CartDrawer({
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <ShoppingBag size={48} className="text-white/10 mb-4" />
-                  <p className="text-white/40 text-sm">Your cart is empty</p>
+                  <p className="text-white/40 text-sm">Giỏ hàng trống</p>
                   <Link
                     href="/"
                     onClick={onClose}
                     className="mt-4 text-red-500 text-xs font-bold tracking-wider uppercase hover:text-red-400 transition-colors"
                   >
-                    Continue Shopping
+                    Tiếp tục mua sắm
                   </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {items.map((item) => (
-                    <motion.div
+                    <div
                       key={item.variantId}
-                      layout
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
                       className="flex gap-4 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]"
                     >
                       {/* Image */}
@@ -111,14 +111,14 @@ export default function CartDrawer({
                           {item.title}
                         </h3>
                         <p className="text-red-500 text-sm font-bold font-[var(--font-display)] mt-1">
-                          ${item.price.toFixed(2)}
+                          {formatVND(item.price)}
                         </p>
 
                         {/* Quantity controls */}
                         <div className="flex items-center gap-2 mt-2">
                           <button
                             onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
-                            className="w-7 h-7 rounded-md bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:border-red-500/30 transition-all"
+                            className="w-7 h-7 rounded-md bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:border-red-500/30 transition-colors duration-200"
                           >
                             <Minus size={12} />
                           </button>
@@ -127,7 +127,7 @@ export default function CartDrawer({
                           </span>
                           <button
                             onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                            className="w-7 h-7 rounded-md bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:border-red-500/30 transition-all"
+                            className="w-7 h-7 rounded-md bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:border-red-500/30 transition-colors duration-200"
                           >
                             <Plus size={12} />
                           </button>
@@ -142,7 +142,7 @@ export default function CartDrawer({
                       >
                         <X size={16} />
                       </button>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               )}
@@ -152,9 +152,9 @@ export default function CartDrawer({
             {items.length > 0 && (
               <div className="border-t border-white/[0.08] px-6 py-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-white/50 uppercase tracking-wider">Subtotal</span>
+                  <span className="text-sm text-white/50 uppercase tracking-wider">Tạm tính</span>
                   <span className="text-lg font-bold text-white font-[var(--font-display)]">
-                    ${subtotal.toFixed(2)}
+                    {formatVND(subtotal)}
                   </span>
                 </div>
 
@@ -172,10 +172,10 @@ export default function CartDrawer({
                   {checkoutLoading ? (
                     <>
                       <Loader2 size={16} className="animate-spin" />
-                      Processing...
+                      Đang xử lý...
                     </>
                   ) : (
-                    "Checkout"
+                    "Thanh toán"
                   )}
                 </button>
 
@@ -183,7 +183,7 @@ export default function CartDrawer({
                   onClick={onClose}
                   className="block w-full py-3 text-center text-xs text-white/40 tracking-wider uppercase hover:text-white/60 transition-colors"
                 >
-                  Continue Shopping
+                  Tiếp tục mua sắm
                 </button>
               </div>
             )}

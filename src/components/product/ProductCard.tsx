@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import type { ShopifyProduct } from "@/types/product"
 
 type Props = {
@@ -21,22 +20,33 @@ export default function ProductCard({ product }: Props) {
     ? parseFloat(firstVariant.compareAtPrice.amount)
     : null
   const isOnSale = compareAtPrice && compareAtPrice > price
+  const isBestSeller = product.tags?.some(
+    (tag) => tag.toLowerCase() === "bestseller" || tag.toLowerCase() === "best_seller" || tag.toLowerCase() === "best-seller"
+  )
 
   return (
     <Link href={`/products/${product.handle}`}>
-      <motion.div
-        whileHover={{ y: -8 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
-        className="group relative cursor-pointer"
-      >
+      <div className="group relative cursor-pointer will-change-transform transition-transform duration-300 ease-out hover:-translate-y-2">
         {/* Card container */}
-        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/[0.08] backdrop-blur-sm transition-all duration-500 group-hover:border-red-500/30 group-hover:shadow-[0_8px_40px_rgba(220,38,38,0.15)]">
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/[0.08] transition-[border-color,box-shadow] duration-300 group-hover:border-red-500/30 group-hover:shadow-[0_8px_32px_rgba(220,38,38,0.12)]">
 
           {/* Sale badge */}
           {isOnSale && (
             <div className="absolute top-3 left-3 z-20">
               <span className="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase shadow-lg shadow-red-600/30">
                 Giảm giá
+              </span>
+            </div>
+          )}
+
+          {/* Best seller badge */}
+          {isBestSeller && (
+            <div className="absolute top-3 right-3 z-20">
+              <span className="inline-flex items-center gap-1 bg-amber-500 text-black text-[10px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase shadow-lg shadow-amber-500/30">
+                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                </svg>
+                Best Seller
               </span>
             </div>
           )}
@@ -49,7 +59,8 @@ export default function ProductCard({ product }: Props) {
                 alt={product.title}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                loading="lazy"
+                className="object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-105"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-white/20">
@@ -60,11 +71,11 @@ export default function ProductCard({ product }: Props) {
             )}
 
             {/* Gradient overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Quick view hint */}
-            <div className="absolute bottom-0 inset-x-0 flex justify-center pb-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-              <span className="bg-white/90 backdrop-blur-md text-black text-xs font-bold px-4 py-2 rounded-full tracking-wider uppercase">
+            <div className="absolute bottom-0 inset-x-0 flex justify-center pb-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              <span className="bg-white/90 text-black text-xs font-bold px-4 py-2 rounded-full tracking-wider uppercase">
                 Xem chi tiết
               </span>
             </div>
@@ -87,7 +98,7 @@ export default function ProductCard({ product }: Props) {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   )
 }
