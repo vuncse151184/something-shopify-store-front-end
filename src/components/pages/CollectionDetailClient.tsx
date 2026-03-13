@@ -4,9 +4,9 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowLeft, SlidersHorizontal, X } from "lucide-react"
 import Link from "next/link"
-import ProductCard from "@/components/product/ProductCard"
+import InfiniteProductGrid from "@/components/product/InfiniteProductGrid"
 import ShoeFilter, { applyFilters, type ShoeFilters } from "@/components/product/ShoeFilter"
-import { useCollection } from "@/hooks/useCollections"
+import type { ShopifyCollectionPage } from "@/types/collection"
 
 const defaultFilters: ShoeFilters = {
   priceRange: [0, 500],
@@ -15,35 +15,67 @@ const defaultFilters: ShoeFilters = {
   sortBy: "default",
 }
 
-function GridSkeleton() {
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <div
-          key={index}
-          className="rounded-2xl overflow-hidden bg-white/[0.04] border border-white/[0.06] animate-pulse"
-        >
-          <div className="aspect-square bg-white/[0.06]" />
-          <div className="p-4 space-y-2.5">
-            <div className="h-4 bg-white/[0.08] rounded-md w-3/4" />
-            <div className="h-4 bg-white/[0.08] rounded-md w-1/3" />
-          </div>
-        </div>
-      ))}
-    </div>
+const COLLECTION_PAGE_SIZE = 20
+
+async function fetchCollectionPage(handle: string, after: string): Promise<ShopifyCollectionPage> {
+  const response = await fetch(
+    `/api/collections/${handle}?paginated=1&first=${COLLECTION_PAGE_SIZE}&after=${encodeURIComponent(after)}`
   )
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch more collection products")
+  }
+
+  return response.json()
 }
 
-export default function CollectionDetailClient({ handle }: { handle: string }) {
-  const { data: collection, isLoading, error } = useCollection(handle)
+export default function CollectionDetailClient({
+  handle,
+  initialCollection,
+}: {
+  handle: string
+  initialCollection: ShopifyCollectionPage | null
+}) {
   const [filters, setFilters] = useState<ShoeFilters>(defaultFilters)
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false)
+  const [collection, setCollection] = useState(initialCollection)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null)
 
   const filteredProducts = collection?.products
     ? applyFilters(collection.products, filters)
     : []
+  const resetKey = `${handle}-${filteredProducts.length}-${collection?.pageInfo.endCursor ?? "end"}-${filters.priceRange[0]}-${filters.priceRange[1]}-${filters.availability}-${filters.sortBy}-${[...filters.sizes].sort((a, b) => a - b).join(",")}`
 
-  if (error) {
+  async function handleLoadMore() {
+    if (isLoadingMore || !collection?.pageInfo.hasNextPage || !collection.pageInfo.endCursor) return
+
+    setIsLoadingMore(true)
+    setLoadMoreError(null)
+
+    try {
+      const nextPage = await fetchCollectionPage(handle, collection.pageInfo.endCursor)
+
+      setCollection((current) => {
+        if (!current) return nextPage
+
+        const currentIds = new Set(current.products.map((product) => product.id))
+        const nextProducts = nextPage.products.filter((product) => !currentIds.has(product.id))
+
+        return {
+          ...current,
+          products: [...current.products, ...nextProducts],
+          pageInfo: nextPage.pageInfo,
+        }
+      })
+    } catch {
+      setLoadMoreError("Không thể tải thêm sản phẩm")
+    } finally {
+      setIsLoadingMore(false)
+    }
+  }
+
+  if (!collection) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center px-6">
         <p className="text-red-400 text-lg font-bold mb-2">Không tìm thấy bộ sưu tập</p>
@@ -58,6 +90,8 @@ export default function CollectionDetailClient({ handle }: { handle: string }) {
       </div>
     )
   }
+
+  const showEmptyState = !collection.pageInfo.hasNextPage && filteredProducts.length === 0
 
   return (
     <div className="min-h-screen bg-black">
@@ -78,64 +112,53 @@ export default function CollectionDetailClient({ handle }: { handle: string }) {
           </Link>
         </motion.div>
 
-        {isLoading ? (
-          <div className="mb-10 space-y-3">
-            <div className="h-10 bg-white/[0.06] rounded w-64 animate-pulse" />
-            <div className="h-4 bg-white/[0.04] rounded w-96 animate-pulse" />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-[2px] bg-red-500" />
+            <span className="text-red-500 text-xs font-bold tracking-[0.3em] uppercase">
+              Bộ sưu tập
+            </span>
           </div>
-        ) : collection ? (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-10"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-[2px] bg-red-500" />
-              <span className="text-red-500 text-xs font-bold tracking-[0.3em] uppercase">
-                Bộ sưu tập
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-5xl font-bold font-[var(--font-display)] tracking-tight text-white">
-              {collection.title}
-            </h1>
-            {collection.description && (
-              <p className="mt-4 text-sm md:text-base text-white/40 max-w-lg">
-                {collection.description}
-              </p>
-            )}
-          </motion.div>
-        ) : null}
+          <h1 className="text-3xl md:text-5xl font-bold font-[var(--font-display)] tracking-tight text-white">
+            {collection.title}
+          </h1>
+          {collection.description && (
+            <p className="mt-4 text-sm md:text-base text-white/40 max-w-lg">
+              {collection.description}
+            </p>
+          )}
+        </motion.div>
 
-        {!isLoading && collection && (
-          <div className="lg:hidden mb-6">
-            <button
-              onClick={() => setMobileFilterOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase border border-white/[0.1] bg-white/[0.03] text-white/50 hover:border-white/20 hover:text-white/70 transition-all"
-            >
-              <SlidersHorizontal size={14} />
-              Bộ lọc
-            </button>
-          </div>
-        )}
+        <div className="lg:hidden mb-6">
+          <button
+            onClick={() => setMobileFilterOpen(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase border border-white/[0.1] bg-white/[0.03] text-white/50 hover:border-white/20 hover:text-white/70 transition-all"
+          >
+            <SlidersHorizontal size={14} />
+            Bộ lọc
+          </button>
+        </div>
 
         <div className="flex gap-8">
-          {!isLoading && collection && (
-            <motion.aside
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="hidden lg:block flex-shrink-0 w-[240px]"
-            >
-              <div className="sticky top-28 bg-white/[0.02] border border-white/[0.08] rounded-2xl p-5">
-                <ShoeFilter
-                  filters={filters}
-                  onChange={setFilters}
-                  totalResults={filteredProducts.length}
-                />
-              </div>
-            </motion.aside>
-          )}
+          <motion.aside
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="hidden lg:block flex-shrink-0 w-[240px]"
+          >
+            <div className="sticky top-28 bg-white/[0.02] border border-white/[0.08] rounded-2xl p-5">
+              <ShoeFilter
+                filters={filters}
+                onChange={setFilters}
+                totalResults={filteredProducts.length}
+              />
+            </div>
+          </motion.aside>
 
           {mobileFilterOpen && (
             <>
@@ -169,38 +192,33 @@ export default function CollectionDetailClient({ handle }: { handle: string }) {
           )}
 
           <div className="flex-1 min-w-0">
-            {isLoading && <GridSkeleton />}
-
-            {!isLoading && filteredProducts.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
+            {!showEmptyState && (
+              <InfiniteProductGrid
+                products={filteredProducts}
+                hasMore={collection.pageInfo.hasNextPage}
+                isLoadingMore={isLoadingMore}
+                onLoadMore={handleLoadMore}
+                resetKey={resetKey}
+                delay={0.3}
+                itemDuration={0.4}
                 className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
-              >
-                {filteredProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <ProductCard product={product} />
-                  </motion.div>
-                ))}
-              </motion.div>
+              />
             )}
 
-            {!isLoading && collection && filteredProducts.length === 0 && (
+            {showEmptyState && (
               <div className="text-center py-20 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
                 <p className="text-white/40 text-sm">Không có sản phẩm phù hợp với bộ lọc hiện tại</p>
                 <button
                   onClick={() => setFilters(defaultFilters)}
                   className="mt-3 text-red-500 text-xs font-bold tracking-wider uppercase hover:text-red-400 transition-colors"
                 >
-                  Xoá bộ lọc
+                  Xóa bộ lọc
                 </button>
               </div>
+            )}
+
+            {loadMoreError && (
+              <p className="mt-4 text-center text-xs text-red-400">{loadMoreError}</p>
             )}
           </div>
         </div>

@@ -1,14 +1,54 @@
 import { getShopifyClient } from "@/packages/shopify/client"
 import { PRODUCTS_QUERY, PRODUCT_BY_HANDLE_QUERY } from "@/packages/shopify/queries"
-import type { ShopifyProduct, ShopifyProductEdge } from "@/types/product"
+import type {
+  ShopifyPageInfo,
+  ShopifyProduct,
+  ShopifyProductEdge,
+  ShopifyProductsPage,
+} from "@/types/product"
 
-export async function getProducts(): Promise<ShopifyProduct[]> {
+type GetProductsPageOptions = {
+  first?: number
+  after?: string | null
+}
+
+function mapProduct(edge: ShopifyProductEdge): ShopifyProduct {
+  return {
+    id: edge.node.id,
+    title: edge.node.title,
+    handle: edge.node.handle,
+    tags: edge.node.tags,
+    description: edge.node.description,
+    images: edge.node.images.edges.map((img: { node: { url: string } }) => img.node),
+    variants: edge.node.variants.edges.map((v: { node: ShopifyProduct["variants"][number] }) => v.node),
+  }
+}
+
+function mapPageInfo(pageInfo?: Partial<ShopifyPageInfo> | null): ShopifyPageInfo {
+  return {
+    hasNextPage: pageInfo?.hasNextPage ?? false,
+    hasPreviousPage: pageInfo?.hasPreviousPage ?? false,
+    endCursor: pageInfo?.endCursor ?? null,
+    startCursor: pageInfo?.startCursor ?? null,
+  }
+}
+
+export async function getProductsPage({
+  first = 20,
+  after = null,
+}: GetProductsPageOptions = {}): Promise<ShopifyProductsPage> {
   const shopifyClient = getShopifyClient()
   const { data, errors } = await shopifyClient.request<{
     products: {
       edges: ShopifyProductEdge[]
+      pageInfo: ShopifyPageInfo
     }
-  }>(PRODUCTS_QUERY)
+  }>(PRODUCTS_QUERY, {
+    variables: {
+      first,
+      after,
+    },
+  })
 
   if (errors) {
     const details = [
@@ -26,15 +66,25 @@ export async function getProducts(): Promise<ShopifyProduct[]> {
     throw new Error("Shopify products query returned no product data")
   }
 
-  return data.products.edges.map((edge: ShopifyProductEdge) => ({
-    id: edge.node.id,
-    title: edge.node.title,
-    handle: edge.node.handle,
-    tags: edge.node.tags,
-    description: edge.node.description,
-    images: edge.node.images.edges.map((img: { node: { url: string } }) => img.node),
-    variants: edge.node.variants.edges.map((v: { node: ShopifyProduct["variants"][number] }) => v.node),
-  }))
+  return {
+    products: data.products.edges.map(mapProduct),
+    pageInfo: mapPageInfo(data.products.pageInfo),
+  }
+}
+
+export async function getProducts(): Promise<ShopifyProduct[]> {
+  const products: ShopifyProduct[] = []
+  let after: string | null = null
+  let hasNextPage = true
+
+  while (hasNextPage) {
+    const page = await getProductsPage({ after })
+    products.push(...page.products)
+    hasNextPage = page.pageInfo.hasNextPage
+    after = page.pageInfo.endCursor
+  }
+
+  return products
 }
 
 export async function getProductByHandle(handle: string): Promise<ShopifyProduct | null> {

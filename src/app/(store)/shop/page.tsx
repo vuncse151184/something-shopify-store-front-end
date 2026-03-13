@@ -13,29 +13,29 @@ import type { ShopifyPageInfo, ShopifyProduct } from "@/types/product"
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: "Tất cả sản phẩm sneaker chính hãng",
+  title: "Shop sneaker chính hãng",
   description:
-    "Khám phá toàn bộ giày sneaker và streetwear chính hãng tại Something Store, tối ưu cho khách hàng mua sắm tại Việt Nam.",
+    "Shop toàn bộ sneaker và streetwear chính hãng tại Something Store, kèm bộ lọc nhanh theo giá, size và tình trạng sản phẩm.",
   keywords: [
-    "tất cả sản phẩm sneaker",
+    "shop sneaker",
     "giày sneaker chính hãng",
-    "mua sneaker Việt Nam",
+    "streetwear Việt Nam",
     "Something Store",
   ],
-  alternates: buildLocaleAlternates("/products"),
+  alternates: buildLocaleAlternates("/shop"),
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
-    url: `${siteConfig.url}/products`,
+    url: `${siteConfig.url}/shop`,
     siteName: siteConfig.name,
-    title: "Tất cả sản phẩm | Something Store",
+    title: "Shop | Something Store",
     description:
-      "Khám phá toàn bộ giày sneaker và streetwear chính hãng tại Something Store, tối ưu cho khách hàng mua sắm tại Việt Nam.",
-    images: getMetadataImages(undefined, "Tất cả sản phẩm | Something Store"),
+      "Shop toàn bộ sneaker và streetwear chính hãng tại Something Store, kèm bộ lọc nhanh theo giá, size và tình trạng sản phẩm.",
+    images: getMetadataImages(undefined, "Shop | Something Store"),
   },
 }
 
-export default async function ProductsPage() {
+export default async function ShopPage() {
   let initialProducts: ShopifyProduct[] = []
   let initialPageInfo: ShopifyPageInfo = {
     hasNextPage: false,
@@ -57,7 +57,7 @@ export default async function ProductsPage() {
     <>
       {initialProducts.length > 0 && (
         <JsonLd
-          data={buildProductListSchema("Tất cả sản phẩm Something Store", "/products", initialProducts)}
+          data={buildProductListSchema("Shop Something Store", "/shop", initialProducts)}
         />
       )}
       <ShopCatalogClient

@@ -1,15 +1,32 @@
 import "server-only"
 import { getShopifyClient } from "@/packages/shopify/client"
 import { COLLECTIONS_QUERY, COLLECTION_BY_HANDLE_QUERY } from "@/packages/shopify/queries"
-import type { ShopifyProduct, ShopifyProductEdge } from "@/types/product"
+import type { ShopifyCollection, ShopifyCollectionPage } from "@/types/collection"
+import type { ShopifyPageInfo, ShopifyProduct, ShopifyProductEdge } from "@/types/product"
 
-export interface ShopifyCollection {
-  id: string
-  title: string
-  handle: string
-  description: string
-  image: { url: string; altText: string | null } | null
-  products: ShopifyProduct[]
+type GetCollectionPageOptions = {
+  first?: number
+  after?: string | null
+}
+
+function mapCollectionProduct(edge: ShopifyProductEdge): ShopifyProduct {
+  return {
+    id: edge.node.id,
+    title: edge.node.title,
+    handle: edge.node.handle,
+    description: edge.node.description,
+    images: edge.node.images.edges.map((img) => img.node),
+    variants: edge.node.variants.edges.map((v) => v.node),
+  }
+}
+
+function mapPageInfo(pageInfo?: Partial<ShopifyPageInfo> | null): ShopifyPageInfo {
+  return {
+    hasNextPage: pageInfo?.hasNextPage ?? false,
+    hasPreviousPage: pageInfo?.hasPreviousPage ?? false,
+    endCursor: pageInfo?.endCursor ?? null,
+    startCursor: pageInfo?.startCursor ?? null,
+  }
 }
 
 export async function getCollections(): Promise<ShopifyCollection[]> {
@@ -58,7 +75,10 @@ export async function getCollections(): Promise<ShopifyCollection[]> {
   }))
 }
 
-export async function getCollectionByHandle(handle: string): Promise<ShopifyCollection | null> {
+export async function getCollectionByHandlePage(
+  handle: string,
+  { first = 20, after = null }: GetCollectionPageOptions = {}
+): Promise<ShopifyCollectionPage | null> {
   const client = getShopifyClient()
   const { data, errors } = await client.request<{
     collectionByHandle: {
@@ -67,9 +87,18 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
       handle: string
       description: string
       image: { url: string; altText: string | null } | null
-      products: { edges: ShopifyProductEdge[] }
+      products: {
+        edges: ShopifyProductEdge[]
+        pageInfo: ShopifyPageInfo
+      }
     } | null
-  }>(COLLECTION_BY_HANDLE_QUERY, { variables: { handle } })
+  }>(COLLECTION_BY_HANDLE_QUERY, {
+    variables: {
+      handle,
+      first,
+      after,
+    },
+  })
 
   if (errors) {
     throw new Error(`Shopify collection query failed: ${errors.message}`)
@@ -84,13 +113,33 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
     handle: collection.handle,
     description: collection.description,
     image: collection.image,
-    products: collection.products.edges.map((edge) => ({
-      id: edge.node.id,
-      title: edge.node.title,
-      handle: edge.node.handle,
-      description: edge.node.description,
-      images: edge.node.images.edges.map((img) => img.node),
-      variants: edge.node.variants.edges.map((v) => v.node),
-    })),
+    products: collection.products.edges.map(mapCollectionProduct),
+    pageInfo: mapPageInfo(collection.products.pageInfo),
+  }
+}
+
+export async function getCollectionByHandle(handle: string): Promise<ShopifyCollection | null> {
+  const firstPage = await getCollectionByHandlePage(handle)
+  if (!firstPage) return null
+
+  const products = [...firstPage.products]
+  let after = firstPage.pageInfo.endCursor
+  let hasNextPage = firstPage.pageInfo.hasNextPage
+
+  while (hasNextPage) {
+    const page = await getCollectionByHandlePage(handle, { after })
+    if (!page) break
+    products.push(...page.products)
+    hasNextPage = page.pageInfo.hasNextPage
+    after = page.pageInfo.endCursor
+  }
+
+  return {
+    id: firstPage.id,
+    title: firstPage.title,
+    handle: firstPage.handle,
+    description: firstPage.description,
+    image: firstPage.image,
+    products,
   }
 }

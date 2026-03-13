@@ -21,11 +21,11 @@ const defaultFilters: ShoeFilters = {
 const allSizes = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46]
 
 const sortOptions = [
-  { value: "default", label: "Default" },
-  { value: "price-asc", label: "Price: Low → High" },
-  { value: "price-desc", label: "Price: High → Low" },
-  { value: "name-asc", label: "Name: A → Z" },
-  { value: "name-desc", label: "Name: Z → A" },
+  { value: "default", label: "Mặc định" },
+  { value: "price-asc", label: "Giá: Thấp → cao" },
+  { value: "price-desc", label: "Giá: Cao → Thấp" },
+  { value: "name-asc", label: "Tên: A → Z" },
+  { value: "name-desc", label: "Tên: Z → A" },
 ]
 
 type Props = {
@@ -103,7 +103,7 @@ export default function ShoeFilter({ filters, onChange, totalResults }: Props) {
       <div className="flex items-center justify-between mb-2 pb-4 border-b border-white/[0.06]">
         <div>
           <h3 className="text-sm font-bold tracking-[0.15em] text-white uppercase">
-            Filters
+            Lọc
           </h3>
           {totalResults !== undefined && (
             <p className="text-[11px] text-white/25 mt-1">
@@ -256,10 +256,26 @@ export default function ShoeFilter({ filters, onChange, totalResults }: Props) {
   )
 }
 
+function getVariantSizes(title: string) {
+  return Array.from(
+    new Set(
+      (title.match(/\b(3[6-9]|4[0-6])\b/g) ?? []).map((value) => Number.parseInt(value, 10))
+    )
+  )
+}
+
 /**
  * Apply filters to a product list (client-side).
  */
-export function applyFilters<T extends { variants: { price: { amount: string }; quantityAvailable: number; compareAtPrice: { amount: string; currencyCode: string } | null }[]; title: string }>(
+export function applyFilters<T extends {
+  variants: {
+    title: string
+    price: { amount: string }
+    quantityAvailable: number
+    compareAtPrice: { amount: string; currencyCode: string } | null
+  }[]
+  title: string
+}>(
   products: T[],
   filters: ShoeFilters
 ): T[] {
@@ -281,6 +297,15 @@ export function applyFilters<T extends { variants: { price: { amount: string }; 
   } else if (filters.availability === "sale") {
     filtered = filtered.filter((p) =>
       p.variants.some((v) => v.compareAtPrice && parseFloat(v.compareAtPrice.amount) > parseFloat(v.price.amount))
+    )
+  }
+
+  // Sizes
+  if (filters.sizes.length > 0) {
+    filtered = filtered.filter((p) =>
+      p.variants.some((variant) =>
+        getVariantSizes(variant.title).some((size) => filters.sizes.includes(size))
+      )
     )
   }
 

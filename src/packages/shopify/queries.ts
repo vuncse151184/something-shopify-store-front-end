@@ -1,6 +1,6 @@
 export const PRODUCTS_QUERY = `
-query Products {
-  products(first:20) {
+query Products($first: Int!, $after: String) {
+  products(first: $first, after: $after) {
     edges {
       node {
         id
@@ -8,25 +8,25 @@ query Products {
         tags
         handle
         description
-        images(first:5){
-          edges{
-            node{
+        images(first: 5) {
+          edges {
+            node {
               url
             }
           }
         }
-        variants(first:10){
-          edges{
-            node{
+        variants(first: 10) {
+          edges {
+            node {
               id
               title
               sku
               quantityAvailable
-              price{
+              price {
                 amount
                 currencyCode
               }
-              compareAtPrice{
+              compareAtPrice {
                 amount
                 currencyCode
               }
@@ -34,6 +34,12 @@ query Products {
           }
         }
       }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
     }
   }
 }
@@ -56,6 +62,9 @@ query ProductByHandle($handle: String!) {
           height
         }
       }
+      pageInfo {
+        hasNextPage
+      }
     }
     variants(first: 20) {
       edges {
@@ -73,6 +82,9 @@ query ProductByHandle($handle: String!) {
             currencyCode
           }
         }
+      }
+      pageInfo {
+        hasNextPage
       }
     }
   }
@@ -131,12 +143,18 @@ query Collections {
         }
       }
     }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
   }
 }
 `
 
 export const COLLECTION_BY_HANDLE_QUERY = `
-query CollectionByHandle($handle: String!) {
+query CollectionByHandle($handle: String!, $first: Int!, $after: String) {
   collectionByHandle(handle: $handle) {
     id
     title
@@ -146,7 +164,7 @@ query CollectionByHandle($handle: String!) {
       url
       altText
     }
-    products(first: 50) {
+    products(first: $first, after: $after) {
       edges {
         node {
           id
@@ -179,6 +197,10 @@ query CollectionByHandle($handle: String!) {
             }
           }
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }

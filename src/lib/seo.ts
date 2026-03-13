@@ -48,7 +48,7 @@ export function buildLocaleAlternates(path: string) {
 export function normalizeDescription(
   value: string | null | undefined,
   fallback: string = siteConfig.description,
-  maxLength:number = 160
+  maxLength: number = 160
 ) {
   const cleaned = (value || fallback).replace(/\s+/g, " ").trim()
 
@@ -166,10 +166,10 @@ export function buildProductMetadata(product: ShopifyProduct): Metadata {
     },
     other: firstVariant
       ? {
-          "product:price:amount": Number.parseFloat(firstVariant.price.amount).toFixed(0),
-          "product:price:currency": firstVariant.price.currencyCode,
-          "product:availability": firstVariant.quantityAvailable > 0 ? "in stock" : "out of stock",
-        }
+        "product:price:amount": Number.parseFloat(firstVariant.price.amount).toFixed(0),
+        "product:price:currency": firstVariant.price.currencyCode,
+        "product:availability": firstVariant.quantityAvailable > 0 ? "in stock" : "out of stock",
+      }
       : undefined,
   }
 }
@@ -315,20 +315,20 @@ export function buildProductSchema(product: ShopifyProduct) {
       url: buildAbsoluteUrl(path),
       offers: firstVariant
         ? {
-            "@type": "Offer",
-            url: buildAbsoluteUrl(path),
-            priceCurrency: firstVariant.price.currencyCode,
-            price,
-            availability:
-              firstVariant.quantityAvailable > 0
-                ? "https://schema.org/InStock"
-                : "https://schema.org/OutOfStock",
-            itemCondition: "https://schema.org/NewCondition",
-            seller: {
-              "@type": "Organization",
-              name: siteConfig.name,
-            },
-          }
+          "@type": "Offer",
+          url: buildAbsoluteUrl(path),
+          priceCurrency: firstVariant.price.currencyCode,
+          price,
+          availability:
+            firstVariant.quantityAvailable > 0
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock",
+          itemCondition: "https://schema.org/NewCondition",
+          seller: {
+            "@type": "Organization",
+            name: siteConfig.name,
+          },
+        }
         : undefined,
     },
     buildBreadcrumbSchema([

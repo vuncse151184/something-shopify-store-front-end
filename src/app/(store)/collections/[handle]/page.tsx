@@ -7,7 +7,11 @@ import {
   buildCollectionSchema,
   buildMissingPageMetadata,
 } from "@/lib/seo"
-import { getCollectionByHandle, getCollections } from "@/services/collection.service"
+import {
+  getCollectionByHandle,
+  getCollectionByHandlePage,
+  getCollections,
+} from "@/services/collection.service"
 
 export const revalidate = 3600
 
@@ -43,17 +47,20 @@ export default async function CollectionDetailPage({ params }: CollectionPagePro
   const { handle } = await params
 
   let collection = null
+  let initialCollection = null
 
   try {
     collection = await getCachedCollection(handle)
+    initialCollection = await getCollectionByHandlePage(handle)
   } catch {
     collection = null
+    initialCollection = null
   }
 
   return (
     <>
       {collection ? <JsonLd data={buildCollectionSchema(collection)} /> : null}
-      <CollectionDetailClient handle={handle} />
+      <CollectionDetailClient handle={handle} initialCollection={initialCollection} />
     </>
   )
 }

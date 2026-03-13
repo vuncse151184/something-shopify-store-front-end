@@ -26,6 +26,18 @@ export interface ShopifyProduct {
   variants: ShopifyVariant[]
 }
 
+export interface ShopifyPageInfo {
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  endCursor: string | null
+  startCursor: string | null
+}
+
+export interface ShopifyProductsPage {
+  products: ShopifyProduct[]
+  pageInfo: ShopifyPageInfo
+}
+
 /**
  * Raw Shopify Storefront API response shape (before flattening edges/nodes)
  */

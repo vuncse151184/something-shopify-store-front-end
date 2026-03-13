@@ -31,13 +31,13 @@ export default function ProductCard({ product }: Props) {
         <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/[0.08] transition-[border-color,box-shadow] duration-300 group-hover:border-red-500/30 group-hover:shadow-[0_8px_32px_rgba(220,38,38,0.12)]">
 
           {/* Sale badge */}
-          {isOnSale && (
+          {/* {isOnSale && (
             <div className="absolute top-3 left-3 z-20">
               <span className="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase shadow-lg shadow-red-600/30">
                 Giảm giá
               </span>
             </div>
-          )}
+          )} */}
 
           {/* Best seller badge */}
           {isBestSeller && (
@@ -46,7 +46,7 @@ export default function ProductCard({ product }: Props) {
                 <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
                 </svg>
-                Best Seller
+                Top bán chạy
               </span>
             </div>
           )}

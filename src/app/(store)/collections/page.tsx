@@ -48,7 +48,7 @@ export default function CollectionsPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-14 md:mb-20"
+          className="mb-10 md:mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-[2px] bg-red-500" />
@@ -74,7 +74,7 @@ export default function CollectionsPage() {
 
         {/* Loading */}
         {isLoading && (
-          <div className="space-y-16">
+          <div className="space-y-12">
             {Array.from({ length: 3 }).map((_, i) => (
               <SectionSkeleton key={i} />
             ))}
@@ -83,7 +83,7 @@ export default function CollectionsPage() {
 
         {/* Collection sections */}
         {collections && collections.length > 0 && (
-          <div className="space-y-20">
+          <div className="space-y-10">
             {collections.map((collection, index) => (
               <motion.section
                 key={collection.id}
@@ -132,7 +132,7 @@ export default function CollectionsPage() {
                 )}
 
                 {/* Divider */}
-                <div className="mt-16 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+                {/* <div className="mt-16 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" /> */}
               </motion.section>
             ))}
           </div>
