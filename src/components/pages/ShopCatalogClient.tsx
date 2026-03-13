@@ -124,7 +124,7 @@ export default function ShopCatalogClient({
               transition={{ delay: 0.15 }}
               className="hidden lg:block flex-shrink-0 w-[260px]"
             >
-              <div className="sticky top-28 bg-white/[0.02] border border-white/[0.08] rounded-2xl p-5">
+              <div className="sticky top-28 bg-white/[0.1] border border-white/[0.08] rounded-2xl p-5">
                 <ShoeFilter
                   filters={filters}
                   onChange={setFilters}

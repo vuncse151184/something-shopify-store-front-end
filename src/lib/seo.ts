@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import type { ShopifyCollection } from "@/services/collection.service"
+import type { ShopifyCollection } from "@/types/collection" 
 import type { ShopifyProduct } from "@/types/product"
 
 const fallbackSiteUrl = "https://something.store"

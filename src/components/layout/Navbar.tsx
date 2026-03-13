@@ -44,7 +44,12 @@ export default function Navbar() {
 
           {/* Left: Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <Image src="https://res.cloudinary.com/dtov4zdy4/image/upload/v1773218437/ChatGPT_Image_Mar_11_2026_03_37_06_PM_1_iolztk.png" alt="Jumpman" width={120} height={120} />
+            <Image
+              src="https://res.cloudinary.com/dtov4zdy4/image/upload/v1773218437/ChatGPT_Image_Mar_11_2026_03_37_06_PM_1_iolztk.png"
+              alt="Jumpman"
+              width={100}
+              height={100}
+             />
           </Link>
 
           {/* Center: Nav links */}
@@ -69,82 +74,82 @@ export default function Navbar() {
                 </Link>
               )
             })}
-          </div>
-
-          {/* Right: Icons */}
-          <div className="flex items-center gap-5">
-            <button
-              className="text-white/70 hover:text-red-400 transition-colors duration-300"
-              aria-label="Search"
-            >
-              <Search size={20} />
-            </button>
-
-            <button
-              onClick={toggleCart}
-              className="relative text-white/70 hover:text-red-400 transition-colors duration-300"
-              aria-label="Cart"
-            >
-              <ShoppingBag size={20} />
-              {totalItems > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-600/40"
-                >
-                  {totalItems > 9 ? "9+" : totalItems}
-                </motion.span>
-              )}
-            </button>
-
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-orange-500 border-2 border-white/20 cursor-pointer hover:border-white/40 transition-all duration-300 hidden sm:block" />
-
-            {/* Mobile hamburger */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden text-white/70 hover:text-white transition-colors"
-              aria-label="Menu"
-            >
-              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
         </div>
 
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-white/[0.06] overflow-hidden"
-            >
-              <div className="px-6 py-6 space-y-1">
-                {navLinks.map((link) => {
-                  const isActive = pathname === link.href
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`block py-3 text-sm font-semibold tracking-[0.2em] uppercase transition-colors ${isActive
-                        ? "text-red-500 border-l-2 border-red-500 pl-4"
-                        : "text-white/60 hover:text-white pl-4"
-                        }`}
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                })}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
+        {/* Right: Icons */}
+        <div className="flex items-center gap-5">
+          <button
+            className="text-white/70 hover:text-red-400 transition-colors duration-300"
+            aria-label="Search"
+          >
+            <Search size={20} />
+          </button>
 
-      {/* Cart Drawer */}
-      <CartDrawer open={cartOpen} onClose={closeCart} />
+          <button
+            onClick={toggleCart}
+            className="relative text-white/70 hover:text-red-400 transition-colors duration-300"
+            aria-label="Cart"
+          >
+            <ShoppingBag size={20} />
+            {totalItems > 0 && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-600/40"
+              >
+                {totalItems > 9 ? "9+" : totalItems}
+              </motion.span>
+            )}
+          </button>
+
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-orange-500 border-2 border-white/20 cursor-pointer hover:border-white/40 transition-all duration-300 hidden sm:block" />
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden text-white/70 hover:text-white transition-colors"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-white/[0.06] overflow-hidden"
+          >
+            <div className="px-6 py-6 space-y-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block py-3 text-sm font-semibold tracking-[0.2em] uppercase transition-colors ${isActive
+                      ? "text-red-500 border-l-2 border-red-500 pl-4"
+                      : "text-white/60 hover:text-white pl-4"
+                      }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav >
+
+      {/* Cart Drawer */ }
+      < CartDrawer open = { cartOpen } onClose = { closeCart } />
     </>
   )
 }

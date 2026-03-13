@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const colorVariants = [
   { id: "white-red", src: "/images/hero-shoe (1).png", label: "Trắng / Đỏ", accent: "#dc2626" },
@@ -12,8 +12,21 @@ const colorVariants = [
   { id: "pink", src: "/images/shoe-pink (1).png", label: "Hồng", accent: "#ec4899" },
 ]
 
+const AUTO_SLIDE_INTERVAL_MS = 4000
+
 export default function SneakerHero() {
   const [activeColor, setActiveColor] = useState("white-red")
+
+  useEffect(() => {
+    const currentIndex = colorVariants.findIndex((variant) => variant.id === activeColor)
+    const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % colorVariants.length : 0
+
+    const intervalId = window.setInterval(() => {
+      setActiveColor(colorVariants[nextIndex].id)
+    }, AUTO_SLIDE_INTERVAL_MS)
+
+    return () => window.clearInterval(intervalId)
+  }, [activeColor])
 
   const activeShoe = colorVariants.find(v => v.id === activeColor) ?? colorVariants[0]
   const accent = activeShoe.accent
