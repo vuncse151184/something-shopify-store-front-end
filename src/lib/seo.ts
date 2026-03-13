@@ -47,8 +47,8 @@ export function buildLocaleAlternates(path: string) {
 
 export function normalizeDescription(
   value: string | null | undefined,
-  fallback = siteConfig.description,
-  maxLength = 160
+  fallback: string = siteConfig.description,
+  maxLength:number = 160
 ) {
   const cleaned = (value || fallback).replace(/\s+/g, " ").trim()
 

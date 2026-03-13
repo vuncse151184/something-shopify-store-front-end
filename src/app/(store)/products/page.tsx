@@ -8,6 +8,7 @@ import {
   siteConfig,
 } from "@/lib/seo"
 import { getProducts } from "@/services/product.service"
+import { ShopifyProduct } from "@/types/product" 
 
 export const revalidate = 3600
 
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductsPage() {
-  let products = []
+  let products: ShopifyProduct[] = []
   let hasError = false
 
   try {
