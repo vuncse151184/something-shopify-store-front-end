@@ -14,12 +14,12 @@ import {
 export const metadata: Metadata = {
   title: "Sneaker chính hãng và streetwear cho khách hàng Việt Nam",
   description:
-    "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Something Store với giao hàng toàn quốc.",
+    "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Toidibangiay với giao hàng toàn quốc.",
   keywords: [
     "sneaker chính hãng",
     "streetwear Việt Nam",
     "mua giày online",
-    "Something Store",
+    "Toidibangiay",
   ],
   alternates: buildLocaleAlternates("/"),
   openGraph: {
@@ -27,16 +27,16 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: "Something Store | Sneaker chính hãng tại Việt Nam",
+    title: "Toidibangiay | Sneaker chính hãng tại Việt Nam",
     description:
-      "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Something Store với giao hàng toàn quốc.",
-    images: getMetadataImages(undefined, "Something Store | Sneaker chính hãng tại Việt Nam"),
+      "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Toidibangiay với giao hàng toàn quốc.",
+    images: getMetadataImages(undefined, "Toidibangiay | Sneaker chính hãng tại Việt Nam"),
   },
   twitter: {
     card: "summary_large_image",
-    title: "Something Store | Sneaker chính hãng tại Việt Nam",
+    title: "Toidibangiay | Sneaker chính hãng tại Việt Nam",
     description:
-      "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Something Store với giao hàng toàn quốc.",
+      "Mua sneaker chính hãng, streetwear chọn lọc và các mẫu giới hạn tại Toidibangiay với giao hàng toàn quốc.",
     images: getMetadataImages().map((image) => image.url),
   },
 }

@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: `${siteConfig.url}/collections`,
     siteName: siteConfig.name,
-    title: "Bộ sưu tập | Something Store",
+    title: "Bộ sưu tập | Toidibangiay",
     description:
       "Khám phá các bộ sưu tập sneaker và streetwear được tuyển chọn cho khách hàng tại Việt Nam.",
-    images: getMetadataImages(undefined, "Bộ sưu tập | Something Store"),
+    images: getMetadataImages(undefined, "Bộ sưu tập | Toidibangiay"),
   },
 }
 

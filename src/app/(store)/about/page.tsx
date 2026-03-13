@@ -6,9 +6,9 @@ import { buildAboutPageSchema, buildLocaleAlternates, getMetadataImages, siteCon
 export const metadata: Metadata = {
   title: "Gi\u1edbi thi\u1ec7u",
   description:
-    "T\u00ecm hi\u1ec3u v\u1ec1 Something Store, c\u1eeda h\u00e0ng gi\u00e0y sneaker v\u00e0 streetwear ch\u00ednh h\u00e3ng v\u1edbi giao h\u00e0ng to\u00e0n qu\u1ed1c v\u00e0 ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 minh b\u1ea1ch.",
+    "T\u00ecm hi\u1ec3u v\u1ec1 Toidibangiay, c\u1eeda h\u00e0ng gi\u00e0y sneaker v\u00e0 streetwear ch\u00ednh h\u00e3ng v\u1edbi giao h\u00e0ng to\u00e0n qu\u1ed1c v\u00e0 ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 minh b\u1ea1ch.",
   keywords: [
-    "gi\u1edbi thi\u1ec7u Something Store",
+    "gi\u1edbi thi\u1ec7u Toidibangiay",
     "sneaker ch\u00ednh h\u00e3ng Vi\u1ec7t Nam",
     "ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 sneaker",
     "c\u1eeda h\u00e0ng gi\u00e0y B\u00e0 R\u1ecba V\u0169ng T\u00e0u",
@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: `${siteConfig.url}/about`,
     siteName: siteConfig.name,
-    title: "Gi\u1edbi thi\u1ec7u | Something Store",
+    title: "Gi\u1edbi thi\u1ec7u | Toidibangiay",
     description:
-      "T\u00ecm hi\u1ec3u v\u1ec1 Something Store, c\u1eeda h\u00e0ng gi\u00e0y sneaker v\u00e0 streetwear ch\u00ednh h\u00e3ng v\u1edbi giao h\u00e0ng to\u00e0n qu\u1ed1c v\u00e0 ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 minh b\u1ea1ch.",
-    images: getMetadataImages(undefined, "Gi\u1edbi thi\u1ec7u | Something Store"),
+      "T\u00ecm hi\u1ec3u v\u1ec1 Toidibangiay, c\u1eeda h\u00e0ng gi\u00e0y sneaker v\u00e0 streetwear ch\u00ednh h\u00e3ng v\u1edbi giao h\u00e0ng to\u00e0n qu\u1ed1c v\u00e0 ch\u00ednh s\u00e1ch \u0111\u1ed5i tr\u1ea3 minh b\u1ea1ch.",
+    images: getMetadataImages(undefined, "Gi\u1edbi thi\u1ec7u | Toidibangiay"),
   },
 }
 
@@ -110,7 +110,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="mt-6 text-base md:text-lg text-white/50 leading-relaxed max-w-2xl mx-auto">
-            Something Store là điểm đến dành cho những tín đồ sneaker và streetwear tại Việt Nam.
+            Toidibangiay là điểm đến dành cho những tín đồ sneaker và streetwear tại Việt Nam.
             Chúng tôi mang đến những đôi giày chính hãng, phiên bản giới hạn và bộ sưu tập
             được tuyển chọn kỹ lưỡng từ các thương hiệu hàng đầu thế giới.
           </p>
@@ -157,12 +157,12 @@ export default function AboutPage() {
 
           <div className="space-y-5 text-sm md:text-base text-white/45 leading-relaxed">
             <p>
-              Something Store được thành lập bởi những người yêu sneaker thực thụ tại Bà Rịa - Vũng Tàu.
+              Toidibangiay được thành lập bởi những người yêu sneaker thực thụ tại Bà Rịa - Vũng Tàu.
               Xuất phát từ niềm đam mê sưu tầm giày và văn hóa đường phố, chúng tôi mong muốn mang đến
               cho cộng đồng sneakerhead Việt Nam một nguồn cung cấp đáng tin cậy.
             </p>
             <p>
-              Mỗi đôi giày tại Something Store đều được kiểm tra kỹ lưỡng về chất lượng và tính xác thực
+              Mỗi đôi giày tại Toidibangiay đều được kiểm tra kỹ lưỡng về chất lượng và tính xác thực
               trước khi đến tay khách hàng. Chúng tôi cam kết chỉ bán hàng chính hãng 100%, đi kèm
               hóa đơn và giấy tờ đầy đủ.
             </p>

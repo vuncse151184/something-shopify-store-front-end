@@ -5,10 +5,10 @@ import type { ShopifyProduct } from "@/types/product"
 const fallbackSiteUrl = "https://something.store"
 
 export const siteConfig = {
-  name: "Something Store",
+  name: "Toidibangiay",
   url: process.env.NEXT_PUBLIC_SITE_URL || fallbackSiteUrl,
   description:
-    "Something Store chuyên giày sneaker chính hãng, streetwear và các bộ sưu tập giới hạn dành cho khách hàng tại Việt Nam.",
+    "Toidibangiay chuyên giày sneaker chính hãng, streetwear và các bộ sưu tập giới hạn dành cho khách hàng tại Việt Nam.",
   locale: "vi_VN",
   language: "vi-VN",
   country: "VN",
@@ -26,7 +26,7 @@ export const defaultKeywords = [
   "mua giày online",
   "giày Nike chính hãng",
   "Jordan chính hãng",
-  "Something Store",
+  "Toidibangiay",
   "Tôi đi bán giày",
   "Toidibangiay"
 ]
@@ -85,8 +85,8 @@ export function getMetadataImages(url?: string | null, alt?: string) {
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Something Store | Sneaker chính hãng tại Việt Nam",
-    template: "%s | Something Store",
+    default: "Toidibangiay | Sneaker chính hãng tại Việt Nam",
+    template: "%s | Toidibangiay",
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
@@ -101,13 +101,13 @@ export const defaultMetadata: Metadata = {
     locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: "Something Store | Sneaker chính hãng tại Việt Nam",
+    title: "Toidibangiay | Sneaker chính hãng tại Việt Nam",
     description: siteConfig.description,
     images: getMetadataImages(undefined, `${siteConfig.name} | Sneaker chính hãng tại Việt Nam`),
   },
   twitter: {
     card: "summary_large_image",
-    title: "Something Store | Sneaker chính hãng tại Việt Nam",
+    title: "Toidibangiay | Sneaker chính hãng tại Việt Nam",
     description: siteConfig.description,
     images: [resolveMetadataImage()],
   },
@@ -122,6 +122,9 @@ export const defaultMetadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification:{
+    google: "gc56lmMGF5svD8cHlPccsXbZ2iLsN-Q-BfOJtelUxYc"
+  },
   other: {
     "geo.region": "VN-43",
     "geo.placename": "Ba Ria - Vung Tau",
@@ -135,7 +138,7 @@ export function buildProductMetadata(product: ShopifyProduct): Metadata {
   const firstVariant = product.variants[0]
   const description = normalizeDescription(
     product.description,
-    `${product.title} chính hãng tại Something Store, hỗ trợ giao hàng toàn quốc và tư vấn chọn size tại Việt Nam.`
+    `${product.title} chính hãng tại Toidibangiay, hỗ trợ giao hàng toàn quốc và tư vấn chọn size tại Việt Nam.`
   )
 
   return {
@@ -179,7 +182,7 @@ export function buildCollectionMetadata(collection: ShopifyCollection): Metadata
   const image = collection.image?.url || collection.products[0]?.images[0]?.url
   const description = normalizeDescription(
     collection.description,
-    `Khám phá bộ sưu tập ${collection.title} tại Something Store với các mẫu sneaker chính hãng dành cho thị trường Việt Nam.`
+    `Khám phá bộ sưu tập ${collection.title} tại Toidibangiay với các mẫu sneaker chính hãng dành cho thị trường Việt Nam.`
   )
 
   return {
@@ -214,7 +217,7 @@ export function buildCollectionMetadata(collection: ShopifyCollection): Metadata
 export function buildMissingPageMetadata(title: string, path: string): Metadata {
   return {
     title,
-    description: "Trang bạn tìm hiện không còn khả dụng tại Something Store.",
+    description: "Trang bạn tìm hiện không còn khả dụng tại Toidibangiay.",
     alternates: buildLocaleAlternates(path),
     robots: {
       index: false,
@@ -277,7 +280,7 @@ export function buildAboutPageSchema() {
     url: buildAbsoluteUrl("/about"),
     name: `Giới thiệu ${siteConfig.name}`,
     description:
-      "Tìm hiểu về Something Store, cửa hàng sneaker và streetwear chính hãng phục vụ khách hàng tại Việt Nam.",
+      "Tìm hiểu về Toidibangiay, cửa hàng sneaker và streetwear chính hãng phục vụ khách hàng tại Việt Nam.",
     inLanguage: siteConfig.language,
     about: {
       "@id": `${siteConfig.url}#store`,
@@ -380,7 +383,7 @@ export function buildProductListSchema(
     "@id": `${buildAbsoluteUrl(path)}#products`,
     url: buildAbsoluteUrl(path),
     name: title,
-    description: "Danh mục sneaker và streetwear chính hãng tại Something Store.",
+    description: "Danh mục sneaker và streetwear chính hãng tại Toidibangiay.",
     inLanguage: siteConfig.language,
     mainEntity: {
       "@type": "ItemList",

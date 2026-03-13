@@ -90,7 +90,7 @@ export default function ShopCatalogClient({
             Sneaker chính hãng cho thị trường Việt Nam
           </h1>
           <p className="mt-4 text-sm md:text-base text-white/40 max-w-2xl leading-relaxed">
-            Tập hợp những mẫu sneaker, streetwear và phối màu nổi bật đang có tại Something Store.
+            Tập hợp những mẫu sneaker, streetwear và phối màu nổi bật đang có tại Toidibangiay.
             Lọc nhanh theo giá, size và tình trạng bán để tìm đúng sản phẩm bạn cần.
           </p>
         </div>

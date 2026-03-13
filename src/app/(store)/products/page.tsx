@@ -15,12 +15,12 @@ export const revalidate = 3600
 export const metadata: Metadata = {
   title: "Tất cả sản phẩm sneaker chính hãng",
   description:
-    "Khám phá toàn bộ giày sneaker và streetwear chính hãng tại Something Store, tối ưu cho khách hàng mua sắm tại Việt Nam.",
+    "Khám phá toàn bộ giày sneaker và streetwear chính hãng tại Toidibangiay, tối ưu cho khách hàng mua sắm tại Việt Nam.",
   keywords: [
     "tất cả sản phẩm sneaker",
     "giày sneaker chính hãng",
     "mua sneaker Việt Nam",
-    "Something Store",
+    "Toidibangiay",
   ],
   alternates: buildLocaleAlternates("/products"),
   openGraph: {
@@ -28,10 +28,10 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: `${siteConfig.url}/products`,
     siteName: siteConfig.name,
-    title: "Tất cả sản phẩm | Something Store",
+    title: "Tất cả sản phẩm | Toidibangiay",
     description:
-      "Khám phá toàn bộ giày sneaker và streetwear chính hãng tại Something Store, tối ưu cho khách hàng mua sắm tại Việt Nam.",
-    images: getMetadataImages(undefined, "Tất cả sản phẩm | Something Store"),
+      "Khám phá toàn bộ giày sneaker và streetwear chính hãng tại Toidibangiay, tối ưu cho khách hàng mua sắm tại Việt Nam.",
+    images: getMetadataImages(undefined, "Tất cả sản phẩm | Toidibangiay"),
   },
 }
 
@@ -57,7 +57,7 @@ export default async function ProductsPage() {
     <>
       {initialProducts.length > 0 && (
         <JsonLd
-          data={buildProductListSchema("Tất cả sản phẩm Something Store", "/products", initialProducts)}
+          data={buildProductListSchema("Tất cả sản phẩm Toidibangiay", "/products", initialProducts)}
         />
       )}
       <ShopCatalogClient

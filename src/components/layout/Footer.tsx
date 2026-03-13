@@ -153,7 +153,7 @@ export default function Footer() {
       <div className="border-t border-white/[0.04]">
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/20">
-            © {new Date().getFullYear()} Something Store. All rights reserved.
+            © {new Date().getFullYear()} Toidibangiay. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link href="#" className="text-[11px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-wider">
